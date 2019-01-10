@@ -31,48 +31,64 @@ var data = {
     },
   };
 
-	var followList = function() {
-		followers = {}
-		for (key in data) {
-			
-			followers[data[key].name] = {};
-			followers[data[key].name].name = data[key].name;
-			followers[data[key].name].follows = [];
-			followers[data[key].name].isFollowed = [];
-			for (var i = 0; i < data[key].follows.length; i++) {
-				var id = data[key].follows[i]
-				var name = getName(id);
-				followers[data[key].name].follows.push(name);
-			}
-		}
-
-		var keys = Object.keys(data);
-
-		for (i = 0; i < keys.length; i++) {
-			var currentId = keys[i];
-			var names = [];
-			for (key in data) {
-				if (data[key].follows.includes(keys[i])) names.push(data[key].name);
-			}
-			followers[getName(currentId)].isFollowed = names;
-		}
-		for (key in followers) {
-			console.log(followers[key].name);
-			console.log('  Follows :\n   ', ...followers[key].follows);
-			console.log('  Is followed by:\n   ', ...followers[key].isFollowed)
-		}
+var followList = function() {
+	followers = {}
+	for (key in data) {
 		
+		followers[data[key].name] = {};
+		followers[data[key].name].name = data[key].name;
+		followers[data[key].name].follows = [];
+		followers[data[key].name].isFollowed = [];
+		for (var i = 0; i < data[key].follows.length; i++) {
+			var id = data[key].follows[i]
+			var name = getName(id);
+			followers[data[key].name].follows.push(name);
+		}
 	}
 
-	var getName = function(id) {
-		return data[id].name;
+	var keys = Object.keys(data);
+
+	for (i = 0; i < keys.length; i++) {
+		var currentId = keys[i];
+		var names = [];
+		for (key in data) {
+			if (data[key].follows.includes(keys[i])) names.push(data[key].name);
+		}
+		followers[getName(currentId)].isFollowed = names;
 	}
+	for (key in followers) {
+		console.log(followers[key].name);
+		console.log('  Follows :\n   ', ...followers[key].follows);
+		console.log('  Is followed by:\n   ', ...followers[key].isFollowed)
+	}
+	
+}
+
+var followsMost = function() {
+	var whoFollowsMost = [];
+	var numberFollowed = 0;
+	for (key in data) {
+		var follows = data[key].follows.length;
+		if (follows > numberFollowed) {
+			numberFollowed = follows;
+			whoFollowsMost.pop()
+			whoFollowsMost.push(data[key].name);
+		}
+	}
+	console.log('Follows The Most People: ', ...whoFollowsMost);
+	console.log('Number of people Followed: ' + numberFollowed);
+}
+
+var getName = function(id) {
+	return data[id].name;
+}
 
 
-followList();
+//followList();
+followsMost();
 
   /*
-List everyone and for each of them, list the names of who they follow and who follows them
+XX List everyone and for each of them, list the names of who they follow and who follows them
 Identify who follows the most people
 Identify who has the most followers
 Identify who has the most followers over 30
