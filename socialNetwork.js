@@ -33,17 +33,35 @@ var data = {
 
 	var followList = function() {
 		followers = {}
-		
 		for (key in data) {
+			
 			followers[data[key].name] = {};
+			followers[data[key].name].name = data[key].name;
 			followers[data[key].name].follows = [];
+			followers[data[key].name].isFollowed = [];
 			for (var i = 0; i < data[key].follows.length; i++) {
 				var id = data[key].follows[i]
 				var name = getName(id);
 				followers[data[key].name].follows.push(name);
 			}
 		}
-		console.log(followers);
+
+		var keys = Object.keys(data);
+
+		for (i = 0; i < keys.length; i++) {
+			var currentId = keys[i];
+			var names = [];
+			for (key in data) {
+				if (data[key].follows.includes(keys[i])) names.push(data[key].name);
+			}
+			followers[getName(currentId)].isFollowed = names;
+		}
+		for (key in followers) {
+			console.log(followers[key].name);
+			console.log('  Follows :\n   ', ...followers[key].follows);
+			console.log('  Is followed by:\n   ', ...followers[key].isFollowed)
+		}
+		
 	}
 
 	var getName = function(id) {
