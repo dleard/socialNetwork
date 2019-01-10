@@ -31,7 +31,7 @@ var data = {
     },
   };
 
-var followList = function() {
+var followList = function(flag) {
 	followers = {}
 	for (key in data) {
 		
@@ -56,12 +56,13 @@ var followList = function() {
 		}
 		followers[getName(currentId)].isFollowed = names;
 	}
-	for (key in followers) {
-		console.log(followers[key].name);
-		console.log('  Follows :\n   ', ...followers[key].follows);
-		console.log('  Is followed by:\n   ', ...followers[key].isFollowed)
-	}
-	
+	if (!flag) {
+		for (key in followers) {
+			console.log(followers[key].name);
+			console.log('  Follows :\n   ', ...followers[key].follows);
+			console.log('  Is followed by:\n   ', ...followers[key].isFollowed)
+		}
+	} else return followers;
 }
 
 var followsMost = function() {
@@ -71,12 +72,30 @@ var followsMost = function() {
 		var follows = data[key].follows.length;
 		if (follows > numberFollowed) {
 			numberFollowed = follows;
-			whoFollowsMost.pop()
+			whoFollowsMost = [];
 			whoFollowsMost.push(data[key].name);
 		}
+		else if(follows === numberFollowed) whoFollowsMost.push(data[key].name);
 	}
 	console.log('Follows The Most People: ', ...whoFollowsMost);
 	console.log('Number of people Followed: ' + numberFollowed);
+}
+
+var mostFollowed = function () {
+	var list = followList('flag');
+	var mostFollowed = [];
+	numFollowers = 0;
+	for (key in list) {
+		var follows = list[key].isFollowed.length;
+		if (follows > numFollowers) {
+			numFollowers = follows;
+			mostFollowed = [];
+			mostFollowed.push(list[key].name);
+		}
+		else if(follows === numFollowers) mostFollowed.push(list[key].name);
+	}
+	console.log('Most Followed: ', ...mostFollowed);
+	console.log('Number of Followers: ', numFollowers);
 }
 
 var getName = function(id) {
@@ -84,12 +103,13 @@ var getName = function(id) {
 }
 
 
-//followList();
+followList();
 followsMost();
+mostFollowed();
 
   /*
 XX List everyone and for each of them, list the names of who they follow and who follows them
-Identify who follows the most people
+XX Identify who follows the most people
 Identify who has the most followers
 Identify who has the most followers over 30
 Identify who follows the most people over 30
