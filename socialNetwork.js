@@ -102,16 +102,37 @@ var getName = function(id) {
 	return data[id].name;
 }
 
+var overThirty = function () {
+	var numOver = 0;
+	var mostName = [];
+	for (key in data) {
+		var over30 = [];	
+		for (var i = 0; i < data[key].follows.length; i++) {
+			var id = data[key].follows[i];
+			if (data[id].age > 30) over30.push(data[id].name);
+		}
+		if (over30.length > numOver) {
+			numOver = over30.length;
+			mostName = [];
+			mostName.push(data[key].name);
+		}
+		else if(over30.length === numOver) mostName.push(data[key].name);
+	}
+	console.log('Follows The Most Over 30: ', ...mostName);
+	console.log('Number of people Followed: ' + numOver);
 
-followList();
-followsMost();
-mostFollowed();
+}
+
+//followList();
+//followsMost();
+//mostFollowed();
+//overThirty();
 
   /*
 XX List everyone and for each of them, list the names of who they follow and who follows them
 XX Identify who follows the most people
-Identify who has the most followers
-Identify who has the most followers over 30
+XX Identify who has the most followers
+XX Identify who has the most followers over 30
 Identify who follows the most people over 30
 List those who follow someone that doesn't follow them back
 List everyone and their reach (sum of # of followers and # of followers of followers)
